@@ -5,6 +5,9 @@ end
 
 ---@return table
 function ESX.GetPlayerData()
+    if Config.CustomInventory == "qs" then
+        ESX.PlayerData.inventory = exports["qs-inventory"]:getUserInventory()
+    end
     return ESX.PlayerData
 end
 
@@ -44,7 +47,7 @@ local addonResourcesState = {
 }
 
 local function IsResourceFound(resource)
-	return addonResourcesState[resource] or error(('Resource [^5%s^1] is Missing!'):format(resource))
+    return addonResourcesState[resource] or error(('Resource [^5%s^1] is Missing!'):format(resource))
 end
 
 function ESX.DisableSpawnManager()
@@ -142,7 +145,7 @@ end
 ---@param options? ProgressBarOptions
 ---@return boolean Success Whether the progress bar was successfully created or not
 function ESX.Progressbar(message, length, options)
-	return IsResourceFound('esx_progressbar') and exports['esx_progressbar']:Progressbar(message, length, options)
+    return IsResourceFound('esx_progressbar') and exports['esx_progressbar']:Progressbar(message, length, options)
 end
 
 function ESX.CancelProgressbar()
@@ -154,16 +157,16 @@ end
 ---@param length? number The length of the notification
 ---@return nil
 function ESX.ShowNotification(message, notifyType, length)
-	return IsResourceFound('esx_notify') and exports['esx_notify']:Notify(notifyType, length, message)
+    return IsResourceFound('esx_notify') and exports['esx_notify']:Notify(notifyType, length, message)
 end
 
 function ESX.TextUI(...)
-	return IsResourceFound('esx_textui') and exports['esx_textui']:TextUI(...)
+    return IsResourceFound('esx_textui') and exports['esx_textui']:TextUI(...)
 end
 
 ---@return nil
 function ESX.HideUI()
-	return IsResourceFound('esx_textui') and exports['esx_textui']:HideUI()
+    return IsResourceFound('esx_textui') and exports['esx_textui']:HideUI()
 end
 
 ---@param sender string
@@ -250,7 +253,7 @@ end
 ---@param on_press function The function to call on press
 ---@param on_release? function The function to call on release
 function ESX.RegisterInput(command_name, label, input_group, key, on_press, on_release)
-	local command = on_release and '+' .. command_name or command_name
+    local command = on_release and '+' .. command_name or command_name
     RegisterCommand(command, on_press, false)
     Core.Input[command_name] = ESX.HashString(command)
     if on_release then
@@ -465,7 +468,7 @@ end
 ---@param coords table | vector3 | vector4 The coords to teleport the entity to
 ---@param cb? function The callback function
 function ESX.Game.Teleport(entity, coords, cb)
-
+    
     if DoesEntityExist(entity) then
         RequestCollisionAtCoord(coords.x, coords.y, coords.z)
         while not HasCollisionLoadedAroundEntity(entity) do
@@ -491,8 +494,8 @@ function ESX.Game.SpawnObject(object, coords, cb, networked)
 
     ESX.Streaming.RequestModel(model)
 
-	local obj = CreateObject(model, coords.x, coords.y, coords.z, networked == nil or networked, false, true)
-	return cb and cb(obj) or obj
+    local obj = CreateObject(model, coords.x, coords.y, coords.z, networked == nil or networked, false, true)
+    return cb and cb(obj) or obj
 end
 
 ---@param object integer | string The object to spawn
@@ -709,22 +712,22 @@ end
 ---@param shape integer The shape to get the test result from
 ---@return boolean, table, table, integer, integer
 function ESX.Game.GetShapeTestResultSync(shape)
-	local handle, hit, coords, normal, material, entity
-	repeat
+    local handle, hit, coords, normal, material, entity
+    repeat
         handle, hit, coords, normal, material, entity = GetShapeTestResultIncludingMaterial(shape)
         Wait(0)
-	until handle ~= 1
-	return hit, coords, normal, material, entity
+    until handle ~= 1
+    return hit, coords, normal, material, entity
 end
 
 ---@param depth number The depth to raycast
 ---@vararg any The arguments to pass to the shape test
 ---@return table, boolean, table, table, integer, integer
 function ESX.Game.RaycastScreen(depth, ...)
-	local world, normal = GetWorldCoordFromScreenCoord(.5, .5)
-	local origin = world + normal
-	local target = world + normal * depth
-	return target, ESX.Game.GetShapeTestResultSync(StartShapeTestLosProbe(origin.x, origin.y, origin.z, target.x, target.y, target.z, ...))
+    local world, normal = GetWorldCoordFromScreenCoord(.5, .5)
+    local origin = world + normal
+    local target = world + normal * depth
+    return target, ESX.Game.GetShapeTestResultSync(StartShapeTestLosProbe(origin.x, origin.y, origin.z, target.x, target.y, target.z, ...))
 end
 
 ---@param entities table The entities to search through

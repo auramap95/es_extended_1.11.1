@@ -1,6 +1,6 @@
 Config = {}
 
-Config.CustomInventory = false
+Config.CustomInventory = "qs"
 
 Config.Accounts = {
     bank = {
