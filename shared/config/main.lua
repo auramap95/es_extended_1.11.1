@@ -53,8 +53,8 @@ Config.AdminLogging = false -- Logs the usage of certain commands by those with 
 -- DO NOT CHANGE BELOW THIS LINE UNLESS YOU KNOW WHAT YOU ARE DOING
 --------------------------------------------------------------------
 Config.EnableDefaultInventory = Config.CustomInventory == false -- Display the default Inventory ( F2 )
-if GetResourceState("ox_inventory") ~= "missing" then
-    Config.CustomInventory = "ox"
+if GetResourceState("qs-inventory") ~= "missing" then
+    Config.CustomInventory = "qs"
 end
 
 local txAdminLocale = GetConvar("txAdmin-locale", "en")
